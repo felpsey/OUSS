@@ -10,8 +10,12 @@ import routerAuthDiscord from './routes/auth/discord.js'
 const app = express()
 const port = process.env.EXPRESS_PORT
 
+app.set('view engine', 'ejs')
+
 app.get('/', (req, res) => {
-  res.sendFile('/views/index.html', { root: '.' })
+  // res.sendFile('/views/index.html', { root: '.' })
+
+  res.render('index', { root: '.' })
 })
 
 app.use('/auth', routerAuth)
