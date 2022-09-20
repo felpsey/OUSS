@@ -1,22 +1,16 @@
-import { exchangeToken } from '../../models/auth/discord.js';
+import { exchangeToken } from '../../models/auth/discord.js'
 
 async function index(req, res) {
-  let auth_status = await exchangeToken(req.query.code)
-  .then(result => {
-    if (result) { return true } else { return false }
-  })
+  await exchangeToken(req.query.code)
+  .then(response => {
+    req.session.initialised = true
+    req.session.discord_user_id = response.access_token
+    res.redirect("/dashboard");
+  })  
   .catch(err => {
     console.log(err)
     res.sendStatus(500)
   })
-
-  if (auth_status) {
-    res.send('Authentication complete')
-  } else {
-    res.redirect('/auth')
-  }
-
-  return
 };
 
 export { index }

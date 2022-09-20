@@ -7,8 +7,11 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "ejs": "^3.1.8",
-    "express": "~4.16.1"
+    "express": "~4.16.1",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3"
   }
 }
