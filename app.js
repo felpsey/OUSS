@@ -37,7 +37,7 @@ const session_configuration = {
   },
   cookie: {
     maxAge: 86400000,
-    sameSite: true,
+    sameSite: 'lax',
     secure: false
   }
 }
