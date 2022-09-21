@@ -7,17 +7,17 @@ const client_secret = process.env.DISCORD_CLIENT_SECRET
 const redirect_uri = process.env.DISCORD_REDIRECT_URI
 const guild_id = process.env.DISCORD_GUILD_ID
 
-async function makeExchange(code) {
+async function makeExchange(auth_code) {
     return await fetch(api_endpoint, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded' 
         },
         body: new URLSearchParams({
           client_id,
           client_secret,
           grant_type: 'authorization_code',
-          code,
+          code: auth_code,
           redirect_uri
         })
       })
@@ -25,14 +25,9 @@ async function makeExchange(code) {
 }
 
 export async function exchangeToken (auth_code) {
-    let authenticated = false
+    let access_token = await makeExchange(auth_code)
 
-    let exchangeResponse = await makeExchange(auth_code)
-
-    if (exchangeResponse.hasOwnProperty('access_token')) {
-        console.log(exchangeResponse.access_token)
-        authenticated = true
-    }
+    return access_token
 
     //   .then(async (data) => {
     //     const fetchDiscordUserGuidInfo = await fetch('http://discordapp.com/api/users/@me/guilds', {
@@ -45,9 +40,6 @@ export async function exchangeToken (auth_code) {
     //         Authorization: `Bearer ${data.access_token}`,
     //       }
     //     });
-
-
-    return authenticated
 }    
     
     //   let in_ouss_server = false;

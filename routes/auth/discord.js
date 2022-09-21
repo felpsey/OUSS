@@ -1,7 +1,10 @@
 import express from 'express';
-const router = express.Router()
 
+// Controllers
 import * as discordAuthController from '../../app/controllers/auth/discordAuthController.js'
+
+// Routes
+const router = express.Router()
 
 router.get('/', async (req, res) => {
     await discordAuthController.index(req, res)
@@ -9,8 +12,6 @@ router.get('/', async (req, res) => {
         console.log(err)
         res.sendStatus(500)
     })
-
-    return
 })
 
 export default router
