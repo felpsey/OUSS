@@ -8,6 +8,7 @@ import cors from 'cors';
 import routerAuth from './routes/auth.js'
 import routerAuthDiscord from './routes/auth/discord.js'
 import routerDashboard from './routes/dashboard.js'
+import routerDiscord from './routes/discord.js'
 
 dotenv.config()
 
@@ -15,7 +16,7 @@ const app = express()
 const port = process.env.EXPRESS_PORT
 
 const cors_configuration = {
-  origin: 'http://localhost:3000',
+  origin: process.env.APP_HOSTNAME,
   credentials: true,
 };
 
@@ -23,11 +24,11 @@ const session_configuration = {
   name: 'ouss.sid',
   resave: false,
   store: new MySQLStore({
-    host: process.env.SESSION_DB_HOST,
-    port: process.env.SESSION_DB_PORT,
-    user: process.env.SESSION_DB_USER,
-    password: process.env.SESSION_DB_PASSWORD,
-    database: process.env.SESSION_DB_NAME,
+    host: process.env.APP_DB_HOST,
+    port: process.env.APP_DB_PORT,
+    user: process.env.APP_DB_USER,
+    password: process.env.APP_DB_PASSWORD,
+    database: process.env.APP_DB_NAME,
     createDatabaseTable: true,
   }),
   saveUninitialized: false,
@@ -54,6 +55,7 @@ app.get('/', (req, res) => {
 app.use('/auth', routerAuth)
 app.use('/auth/discord', routerAuthDiscord)
 app.use('/dashboard', routerDashboard)
+app.use('/discord', routerDiscord)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

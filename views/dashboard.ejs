@@ -1,7 +1,9 @@
 <html>
     <h1>DASHBOARD</h1>
 
-    <p>Discord access token saved to session: <%= discord_user_id %></p>
+    <img src="https://cdn.discordapp.com/avatars/<%= user_info.id %>/<%= user_info.avatar %>.png" alt="">
+
+    <p>Welcome to OUSS <%= user_info.username %></p>
 
     <a href="/auth/logout">Logout</a>
 </html>

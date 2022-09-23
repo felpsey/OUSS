@@ -4,7 +4,7 @@ async function index(req, res) {
   await exchangeToken(req.query.code)
   .then(response => {
     req.session.initialised = true
-    req.session.discord_user_id = response.access_token
+    req.session.discord_access_token = response.access_token
     res.redirect("/dashboard");
   })  
   .catch(err => {

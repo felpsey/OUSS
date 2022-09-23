@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv' 
+
 dotenv.config()
 
 const api_endpoint = process.env.DISCORD_API_ENDPOINT
@@ -28,35 +29,4 @@ export async function exchangeToken (auth_code) {
     let access_token = await makeExchange(auth_code)
 
     return access_token
-
-    //   .then(async (data) => {
-    //     const fetchDiscordUserGuidInfo = await fetch('http://discordapp.com/api/users/@me/guilds', {
-    //       headers: {
-    //         Authorization: `Bearer ${data.access_token}`,
-    //       }
-    //     });
-    //     const fetchDiscordUserInfo = await fetch('http://discordapp.com/api/users/@me', {
-    //       headers: {
-    //         Authorization: `Bearer ${data.access_token}`,
-    //       }
-    //     });
-}    
-    
-    //   let in_ouss_server = false;
-
-    //   const userGuidInfo = await fetchDiscordUserGuidInfo.json();
-    //   const userInfo = await fetchDiscordUserInfo.json();
-
-    //   console.log(userInfo);
-
-    //   var arrayLength = userGuidInfo.length;
-    //   for (var i = 0; i < arrayLength; i++) {
-    //       console.log(userGuidInfo[i].id);
-
-    //       if (userGuidInfo[i].id == guild_id) {
-    //         in_ouss_server = true;
-    //       }
-    //   }
-      
-    //   res.send(`Is ${userInfo.username} in OUSS Server? ` + in_ouss_server)
-    // })
+}
