@@ -3,7 +3,6 @@ import * as dotenv from 'dotenv'
 import * as init_app from './init/app.js'
 import * as init_bot from './init/bot.js'
 
-
 dotenv.config()
 
 const app = await init_app.set_express()
