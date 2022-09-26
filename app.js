@@ -1,62 +1,41 @@
 import * as dotenv from 'dotenv' 
-import express from 'express'
-import session from 'express-session'
-import crypto from 'crypto'
-import MySQLStore from 'express-mysql-session';
-import cors from 'cors';
 
-import routerAuth from './routes/auth.js'
-import routerAuthDiscord from './routes/auth/discord.js'
-import routerDashboard from './routes/dashboard.js'
-import routerDiscord from './routes/discord.js'
+import * as init_app from './init/app.js'
+import * as init_bot from './init/bot.js'
+
 
 dotenv.config()
 
-const app = express()
-const port = process.env.EXPRESS_PORT
+const app = await init_app.set_express()
+init_app.set_routes(app)
 
-const cors_configuration = {
-  origin: process.env.APP_HOSTNAME,
-  credentials: true,
-};
+const bot = await init_bot.start_bot()
 
-const session_configuration = {
-  name: 'ouss.sid',
-  resave: false,
-  store: new MySQLStore({
-    host: process.env.APP_DB_HOST,
-    port: process.env.APP_DB_PORT,
-    user: process.env.APP_DB_USER,
-    password: process.env.APP_DB_PASSWORD,
-    database: process.env.APP_DB_NAME,
-    createDatabaseTable: true,
-  }),
-  saveUninitialized: false,
-  secret: process.env.APP_SESSION_KEY,
-  genid: function(req) {
-    return crypto.randomBytes(48).toString('hex')
-  },
-  cookie: {
-    maxAge: 86400000,
-    sameSite: 'lax',
-    secure: false
+bot.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'contribute') {
+    await interaction.reply('Contribute to the GitHub repository for the application, API and Discord bot at https://github.com/felpsey/ouss.club');
   }
-}
+});
 
-app.use(cors(cors_configuration));
-app.use(session(session_configuration))
 
-app.set('view engine', 'ejs')
+app.get('/discord/bot/role/:discord_role_id', async (req, res) => {
+  let discord_user_id = req.session.discord_user_id
+  let discord_role_id = req.query.discord_role_id
 
-app.get('/', (req, res) => {
-  res.render('index', { root: '.' })
-})
+  let logged_in_discord_user_id = await authDiscord.getUserInfo(req.session.discord_access_token)
 
-app.use('/auth', routerAuth)
-app.use('/auth/discord', routerAuthDiscord)
-app.use('/dashboard', routerDashboard)
-app.use('/discord', routerDiscord)
+  let filtered_user_id = await logged_in_discord_user_id.json()
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  const ouss_guild = await bot.guilds.fetch(process.env.DISCORD_GUILD_ID)
+  .then(async (response) => {
+    return response
+  })
+
+  const user_snowflake = await ouss_guild.members.fetch(filtered_user_id.id)
+
+  user_snowflake.roles.add('895068609192280146')
+
+  res.send('OVER')
 })
