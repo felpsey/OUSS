@@ -50,8 +50,8 @@ async function set_express() {
     return app
 }
 
-function set_routes(app) {
-    routes(app)
+function set_routes(app, bot) {
+    routes(app, bot)
 }
 
 export { 

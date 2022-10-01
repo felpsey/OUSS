@@ -1,23 +1,11 @@
 import { REST, Routes, Client, GatewayIntentBits } from 'discord.js';
 
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
+async function start_bot() {
+    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
+    const commands = define_commands()
 
-function define_commands() {
-    return [{
-        name: 'contribute',
-        description: 'Details how to contribute to the OUSS digital service',
-    }];
-}
+    await set_commands(rest, commands)
 
-async function set_commands(commands) {
-    try {
-        await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commands });
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-async function connect() {
     const client = new Client({ 
         intents: [
             GatewayIntentBits.Guilds
@@ -28,19 +16,37 @@ async function connect() {
         console.log(`Logged in as ${client.user.tag}!`);
     });
 
-    client.login(process.env.DISCORD_BOT_TOKEN)
+    await client.login(process.env.DISCORD_BOT_TOKEN)
 
     return client
 }
 
-async function start_bot() {
-    const commands = define_commands()
-    await set_commands(commands)
-    
-    return await connect()
+function define_commands() {
+    return [{
+        name: 'contribute',
+        description: 'Details how to contribute to the OUSS digital service',
+    }];
+}
+
+async function set_commands(rest, commands) {
+    try {
+        await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commands });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function set_interaction(bot) {
+    bot.on('interactionCreate', async interaction => {
+        if (!interaction.isChatInputCommand()) return;
+      
+        if (interaction.commandName === 'contribute') {
+          await interaction.reply('Contribute to the GitHub repository for the application, API and Discord bot at https://github.com/felpsey/ouss.club');
+        }
+    });
 }
 
 export {
     start_bot,
-    set_commands
+    set_interaction
 }
