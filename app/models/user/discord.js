@@ -16,7 +16,7 @@ async function checkUserInDiscordServer(access_token) {
       headers: {
         Authorization: `Bearer ${access_token}`,
       }
-    });
+  });
 
   userGuildInfo = await userGuildInfo.json()
 

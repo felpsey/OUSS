@@ -9,7 +9,7 @@ const redirect_uri = process.env.DISCORD_REDIRECT_URI
 const guild_id = process.env.DISCORD_GUILD_ID
 
 async function makeExchange(auth_code) {
-    return await fetch(api_endpoint, {
+    return await fetch(api_endpoint + '/oauth2/token', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/x-www-form-urlencoded' 
