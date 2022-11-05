@@ -10,6 +10,29 @@
 
     <br>
 
-    
+    <h2>Roles</h2>
+
+    <table>
+      <th>
+        <tr>
+          <td>Role name</td>
+          <td>Action</td>
+        </tr>
+      </th>
+        <% roles.forEach(function(role){ %>
+          <tr>
+            <td><%= role.name %></td>
+            <td>
+              <a href="/discord/bot/role/<%=role.id%>/add">Add</a>
+              <a href="/discord/bot/role/<%=role.id%>/delete">Remove</a>
+            </td>
+          </tr>
+        <% }); %>
+      <tbody>
+
+      </tbody>
+    </table>
+
+
 </body>
 </html>

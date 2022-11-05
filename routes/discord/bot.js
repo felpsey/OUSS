@@ -10,7 +10,11 @@ export default (app, bot) => {
         })
     })
 
-    app.get('/discord/bot/role/:discord_role_id', async (req, res) => {
+    app.get('/discord/bot/role/:discord_role_id/add', async (req, res) => {
         discordUserRolesController.update(req, res, bot)
+    })
+
+    app.get('/discord/bot/role/:discord_role_id/delete', async (req, res) => {
+        discordUserRolesController.destroy(req, res, bot)
     })
 }
